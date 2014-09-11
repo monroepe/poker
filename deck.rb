@@ -24,7 +24,7 @@ class Deck
     cards.pop
   end
 
-  def shuffle
-    cards.shuffle
+  def shuffle!
+    cards.shuffle!
   end
 end
