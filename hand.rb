@@ -13,7 +13,7 @@ class Hand
     @suits = suits
   end
 
-#converts hand from array of card to array of scores of said cards
+#converts hand from array of card to array of sorted scores of said cards
   def cards_converter
     scores = []
 
@@ -21,7 +21,7 @@ class Hand
       scores << card.score
     end
 
-    scores
+    scores.sort
 
   end
 
@@ -39,6 +39,16 @@ class Hand
     @cards.max
   end
 
+  def card_count?(count)
+    @card_scores.each do |card|
+      if @card_scores.count(card) == count
+        return true
+      end
+    end
+    false
+  end
+
+
 #determines what exists in hands#####
   def pair?
     @card_scores.uniq.length == (@card_scores.length - 1)
@@ -49,16 +59,17 @@ class Hand
   end
 
   def three_of_a_kind?
-    @card_scores.each do |card|
-      if @card_scores.count(card) == 3
-        return true
-      end
-    end
-    false
+    card_count?(3)
   end
 
   def straight?
-
+    all_poker_straights = [14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].each_cons(5)
+    @card_scores.each_cons(5) { |hand|
+      if all_poker_straights.include?(hand)
+        return true
+      end
+    }
+    false
   end
 
   def flush?
@@ -71,15 +82,19 @@ class Hand
   end
 
   def full_house?
+    if !three_of_a_kind?
+      return false
+    else
+      card_count?(2)
+    end
   end
 
   def four_of_a_kind?
+    card_count?(4)
   end
 
   def straight_flush?
-  end
-
-  def royal_flush?
+    flush? && straight?
   end
 
 #################################
