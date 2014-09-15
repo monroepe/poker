@@ -150,11 +150,34 @@ class Hand
   end
 
   def get_straight
+    straight = []
+    all_poker_straights = [14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].each_cons(5)
+    scores = []
+
+    @cards_by_score.values.reverse.each_cons(5) { |hand|
+      if all_poker_straights.include?(hand)
+        scores = hand
+      end
+    }
+
+    scores.each do |score|
+      straight << @cards_by_score.key(score)
+    end
+
+    straight
 
   end
 
   def get_flush
+    cards = []
 
+     @cards_by_score.each_key do |card|
+      if cards.length < 5 && (@suits.count(card.suit) > 4)
+        cards << card
+      end
+    end
+
+    cards
   end
 
   def get_full_house
